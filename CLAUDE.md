@@ -1,5 +1,13 @@
 # LimpezaCerta — Contexto do Projeto para Claude Code
 
+## Regras obrigatórias ao iniciar qualquer sessão
+
+1. **Verificar o branch atual**: executar `git branch --show-current` e confirmar que está em `develop`.
+2. Se estiver em `main`: mudar imediatamente com `git checkout develop` antes de qualquer alteração.
+3. Nunca commitar diretamente em `main`. Todo trabalho vai em `develop`.
+
+---
+
 ## O que é este projeto
 
 SaaS de protocolos de limpeza doméstica criado para Andreia Coelho Fuga, criadora de conteúdo no Instagram (@andreiacoelhofuga). O site oferece guias passo a passo de limpeza, dicas de produtos com links afiliados rastreados, calculadora de diluição de produtos, e um sistema de acesso por conteúdo controlado pela administradora.

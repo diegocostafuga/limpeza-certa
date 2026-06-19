@@ -1,1 +1,11 @@
+branch=$(git symbolic-ref --short HEAD)
+if [ "$branch" = "main" ]; then
+  echo ""
+  echo "⛔ COMMIT BLOQUEADO: você está na branch 'main'."
+  echo "   Mude para 'develop' antes de commitar:"
+  echo "   git checkout develop"
+  echo ""
+  exit 1
+fi
+
 npx lint-staged
