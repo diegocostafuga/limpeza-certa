@@ -10,6 +10,10 @@
   --font-sans: var(--font-inter);
   --font-mono: ui-monospace, monospace;
   --font-heading: var(--font-plus-jakarta);
+  /* Aliases para acesso direto via Tailwind */
+  --color-surface: var(--card);
+  --color-primary-light: var(--secondary);
+  --color-accent-light: oklch(0.97 0.02 349.8);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);

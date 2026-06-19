@@ -1,14 +1,19 @@
-import { Container, Section } from '@/components/layout/container'
+import { HeroSection } from '@/components/home/hero-section'
+import { FeaturedProtocols } from '@/components/home/featured-protocols'
+import { HowItWorks } from '@/components/home/how-it-works'
+import { QuickTips } from '@/components/home/quick-tips'
+import { SignupCta } from '@/components/home/signup-cta'
+import { FeaturedProducts } from '@/components/home/featured-products'
 
 export default function HomePage() {
   return (
-    <Section>
-      <Container>
-        <h1 className="font-heading text-primary text-4xl font-bold">
-          Testados, aprovados e recomendados!
-        </h1>
-        <p className="text-muted-foreground mt-4">Página inicial em construção — issue #4.</p>
-      </Container>
-    </Section>
+    <>
+      <HeroSection />
+      <FeaturedProtocols />
+      <HowItWorks />
+      <QuickTips />
+      <SignupCta />
+      <FeaturedProducts />
+    </>
   )
 }
