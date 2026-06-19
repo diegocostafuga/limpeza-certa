@@ -1,0 +1,42 @@
+{
+  "name": "LimpezaCerta",
+  "short_name": "LimpezaCerta",
+  "description": "Protocolos de limpeza passo a passo. Testados, aprovados e recomendados!",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F8F7FF",
+  "theme_color": "#7C3AED",
+  "orientation": "portrait",
+  "lang": "pt-BR",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["lifestyle", "education", "utilities"],
+  "shortcuts": [
+    {
+      "name": "Calculadora de Diluição",
+      "short_name": "Calculadora",
+      "description": "Calcule a diluição correta do seu produto",
+      "url": "/calculadora",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Protocolos",
+      "short_name": "Protocolos",
+      "description": "Guias passo a passo de limpeza",
+      "url": "/protocolos",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
