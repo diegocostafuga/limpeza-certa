@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Menu, Sparkles } from 'lucide-react'
+import { Menu, Sparkles, LayoutDashboard } from 'lucide-react'
 import { useAuth, UserButton } from '@clerk/nextjs'
 import { buttonVariants } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
@@ -16,7 +16,7 @@ const navLinks = [
   { href: '/calculadora', label: 'Calculadora' },
 ]
 
-export function Navbar() {
+export function Navbar({ isAdmin = false }: { isAdmin?: boolean }) {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
   const { isSignedIn } = useAuth()
@@ -50,7 +50,21 @@ export function Navbar() {
         {/* Desktop auth */}
         <div className="hidden items-center gap-2 md:flex">
           {isSignedIn ? (
-            <UserButton />
+            <div className="flex items-center gap-2">
+              {isAdmin && (
+                <Link
+                  href="/admin"
+                  className={cn(
+                    buttonVariants({ variant: 'ghost', size: 'sm' }),
+                    'text-muted-foreground gap-1.5'
+                  )}
+                >
+                  <LayoutDashboard className="h-4 w-4" />
+                  Admin
+                </Link>
+              )}
+              <UserButton />
+            </div>
           ) : (
             <>
               <Link href="/entrar" className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }))}>
@@ -93,9 +107,21 @@ export function Navbar() {
             </nav>
             <div className="mt-6 flex flex-col gap-2">
               {isSignedIn ? (
-                <div className="flex items-center gap-3 px-1">
-                  <UserButton />
-                  <span className="text-foreground text-sm font-medium">Minha conta</span>
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center gap-3 px-1">
+                    <UserButton />
+                    <span className="text-foreground text-sm font-medium">Minha conta</span>
+                  </div>
+                  {isAdmin && (
+                    <Link
+                      href="/admin"
+                      onClick={() => setOpen(false)}
+                      className={cn(buttonVariants({ variant: 'outline' }), 'w-full gap-2')}
+                    >
+                      <LayoutDashboard className="h-4 w-4" />
+                      Painel admin
+                    </Link>
+                  )}
                 </div>
               ) : (
                 <>
