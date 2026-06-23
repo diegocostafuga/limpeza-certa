@@ -1,5 +1,6 @@
 import { Navbar } from '@/components/layout/navbar'
 import { Footer } from '@/components/layout/footer'
+import { CookieBannerLoader } from '@/components/lgpd/cookie-banner-loader'
 
 export default function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -7,6 +8,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
       <Navbar />
       <main className="flex flex-1 flex-col">{children}</main>
       <Footer />
+      <CookieBannerLoader />
     </>
   )
 }

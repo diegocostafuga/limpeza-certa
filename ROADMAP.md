@@ -7,7 +7,7 @@ Iniciado em: 2026-06-19
 
 ---
 
-## Milestone 1 — Base & Calculadora
+## Milestone 1 — Base & Calculadora ✅
 > Meta: site funcional com layout, identidade visual, calculadora e PWA
 
 - [x] Scaffold Next.js 15 + Tailwind + TypeScript
@@ -15,14 +15,14 @@ Iniciado em: 2026-06-19
 - [x] Criar CLAUDE.md, ROADMAP.md, docs/
 - [x] Repositório GitHub com branches main/develop
 - [x] GitHub Actions (lint + type-check + build)
-- [ ] Design tokens (cores, fontes, espaçamentos)
-- [ ] shadcn/ui instalado e configurado
-- [ ] PWA manifest + service worker
-- [ ] Layout base (navbar, footer, grid)
-- [ ] Página inicial (hero, seções)
-- [ ] Calculadora de diluição (versão pública)
-- [ ] Página de calculadora com resultado visual
-- [ ] Deploy inicial na Vercel
+- [x] Design tokens (cores, fontes, espaçamentos)
+- [x] shadcn/ui instalado e configurado
+- [x] PWA manifest + service worker
+- [x] Layout base (navbar, footer, grid)
+- [x] Página inicial (hero, seções)
+- [x] Calculadora de diluição (versão pública)
+- [x] Página de calculadora com resultado visual
+- [x] Deploy inicial na Vercel (limpeza-certa.vercel.app)
 
 ---
 

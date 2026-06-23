@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useId } from 'react'
-import { Droplets, RotateCcw } from 'lucide-react'
+import { Droplets, RotateCcw, Bookmark, Check } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 type Unit = 'mL' | 'L'
@@ -41,12 +41,21 @@ const PRESETS = [
   { label: '1:50', ratioPart: 1, ratioWater: 50 },
 ]
 
-export function DilutionCalculator() {
+interface DilutionCalculatorProps {
+  isLoggedIn?: boolean
+  onSave?: () => void
+}
+
+export function DilutionCalculator({ isLoggedIn = false, onSave }: DilutionCalculatorProps) {
   const id = useId()
   const [ratioPart, setRatioPart] = useState<string>('1')
   const [ratioWater, setRatioWater] = useState<string>('10')
   const [volume, setVolume] = useState<string>('500')
   const [unit, setUnit] = useState<Unit>('mL')
+  const [saving, setSaving] = useState(false)
+  const [saveName, setSaveName] = useState('')
+  const [showSaveForm, setShowSaveForm] = useState(false)
+  const [savedOk, setSavedOk] = useState(false)
 
   const result = calculate(parseFloat(ratioPart), parseFloat(ratioWater), parseFloat(volume), unit)
 
@@ -60,6 +69,31 @@ export function DilutionCalculator() {
     setRatioWater('10')
     setVolume('500')
     setUnit('mL')
+    setShowSaveForm(false)
+    setSaveName('')
+    setSavedOk(false)
+  }
+
+  async function handleSave() {
+    if (!saveName.trim() || !result) return
+    setSaving(true)
+    const totalMl = unit === 'L' ? parseFloat(volume) * 1000 : parseFloat(volume)
+    await fetch('/api/dilutions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: saveName.trim(),
+        ratioProduct: parseFloat(ratioPart),
+        ratioWater: parseFloat(ratioWater),
+        bottleSizeMl: totalMl,
+      }),
+    })
+    setSaving(false)
+    setSavedOk(true)
+    setShowSaveForm(false)
+    setSaveName('')
+    onSave?.()
+    setTimeout(() => setSavedOk(false), 2500)
   }
 
   return (
@@ -224,6 +258,54 @@ export function DilutionCalculator() {
             <p className="text-muted-foreground mt-4 border-t border-dashed pt-4 text-center text-xs">
               Frasco de {formatVolume(result.total)} — proporção {ratioPart}:{ratioWater}
             </p>
+
+            {/* Save button (logged in only) */}
+            {isLoggedIn && (
+              <div className="mt-4">
+                {savedOk ? (
+                  <p className="text-primary flex items-center justify-center gap-1.5 text-xs font-medium">
+                    <Check className="h-3.5 w-3.5" />
+                    Diluição salva!
+                  </p>
+                ) : showSaveForm ? (
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      placeholder="Ex: Piso laminado"
+                      value={saveName}
+                      onChange={(e) => setSaveName(e.target.value)}
+                      onKeyDown={(e) => e.key === 'Enter' && handleSave()}
+                      className="border-border bg-background text-foreground focus:border-primary focus:ring-primary flex-1 rounded-lg border px-3 py-2 text-xs outline-none focus:ring-2 focus:ring-offset-0"
+                      autoFocus
+                    />
+                    <button
+                      type="button"
+                      onClick={handleSave}
+                      disabled={!saveName.trim() || saving}
+                      className="bg-primary rounded-lg px-3 py-2 text-xs font-medium text-white transition-opacity disabled:opacity-50"
+                    >
+                      {saving ? '...' : 'Salvar'}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setShowSaveForm(false)}
+                      className="text-muted-foreground hover:text-foreground px-2 text-xs"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => setShowSaveForm(true)}
+                    className="text-primary hover:text-primary/80 flex w-full items-center justify-center gap-1.5 text-xs font-medium transition-colors"
+                  >
+                    <Bookmark className="h-3.5 w-3.5" />
+                    Salvar esta diluição
+                  </button>
+                )}
+              </div>
+            )}
           </div>
         ) : (
           <p className="text-muted-foreground py-4 text-center text-sm">

@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Menu, Sparkles } from 'lucide-react'
+import { useAuth, UserButton } from '@clerk/nextjs'
 import { buttonVariants } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { cn } from '@/lib/utils'
@@ -18,6 +19,7 @@ const navLinks = [
 export function Navbar() {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
+  const { isSignedIn } = useAuth()
 
   return (
     <header className="border-border bg-background/95 supports-[backdrop-filter]:bg-background/80 sticky top-0 z-50 w-full border-b backdrop-blur">
@@ -45,13 +47,20 @@ export function Navbar() {
           ))}
         </nav>
 
+        {/* Desktop auth */}
         <div className="hidden items-center gap-2 md:flex">
-          <Link href="/entrar" className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }))}>
-            Entrar
-          </Link>
-          <Link href="/cadastro" className={cn(buttonVariants({ size: 'sm' }))}>
-            Cadastre-se grátis
-          </Link>
+          {isSignedIn ? (
+            <UserButton />
+          ) : (
+            <>
+              <Link href="/entrar" className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }))}>
+                Entrar
+              </Link>
+              <Link href="/cadastro" className={cn(buttonVariants({ size: 'sm' }))}>
+                Cadastre-se grátis
+              </Link>
+            </>
+          )}
         </div>
 
         {/* Mobile menu */}
@@ -83,20 +92,29 @@ export function Navbar() {
               ))}
             </nav>
             <div className="mt-6 flex flex-col gap-2">
-              <Link
-                href="/entrar"
-                onClick={() => setOpen(false)}
-                className={cn(buttonVariants({ variant: 'outline' }), 'w-full')}
-              >
-                Entrar
-              </Link>
-              <Link
-                href="/cadastro"
-                onClick={() => setOpen(false)}
-                className={cn(buttonVariants(), 'w-full')}
-              >
-                Cadastre-se grátis
-              </Link>
+              {isSignedIn ? (
+                <div className="flex items-center gap-3 px-1">
+                  <UserButton />
+                  <span className="text-foreground text-sm font-medium">Minha conta</span>
+                </div>
+              ) : (
+                <>
+                  <Link
+                    href="/entrar"
+                    onClick={() => setOpen(false)}
+                    className={cn(buttonVariants({ variant: 'outline' }), 'w-full')}
+                  >
+                    Entrar
+                  </Link>
+                  <Link
+                    href="/cadastro"
+                    onClick={() => setOpen(false)}
+                    className={cn(buttonVariants(), 'w-full')}
+                  >
+                    Cadastre-se grátis
+                  </Link>
+                </>
+              )}
             </div>
           </SheetContent>
         </Sheet>
