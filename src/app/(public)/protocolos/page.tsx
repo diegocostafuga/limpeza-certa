@@ -18,13 +18,12 @@ export default async function ProtocolosPage() {
   const { userId } = await auth()
 
   const items = await db.query.protocols.findMany({
-    where: userId ? ne(protocols.visibility, 'draft') : eq(protocols.visibility, 'public'),
+    where: ne(protocols.visibility, 'draft'),
     orderBy: (t, { desc }) => [desc(t.createdAt)],
   })
 
   const authRequired = items.filter((p) => p.visibility === 'auth_required')
-  const publicItems = items.filter((p) => p.visibility === 'public')
-  const visible = userId ? items : publicItems
+  const visible = userId ? items : items.filter((p) => p.visibility === 'public')
 
   return (
     <Section>
