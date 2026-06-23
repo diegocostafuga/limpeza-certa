@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
+import { auth } from '@clerk/nextjs/server'
 import { FlaskConical } from 'lucide-react'
-import { DilutionCalculator } from '@/components/calculator/dilution-calculator'
-import { SavedDilutionsPreview } from '@/components/calculator/saved-dilutions-preview'
+import { CalculatorSection } from '@/components/calculator/calculator-section'
 import { Container, Section } from '@/components/layout/container'
 
 export const metadata: Metadata = {
@@ -10,11 +10,12 @@ export const metadata: Metadata = {
     'Calcule a proporção certa de produto e água para qualquer frasco. Simples, rápido e sem erro.',
 }
 
-export default function CalculadoraPage() {
+export default async function CalculadoraPage() {
+  const { userId } = await auth()
+
   return (
     <Section>
       <Container className="max-w-2xl">
-        {/* Header */}
         <div className="mb-8 text-center">
           <div className="bg-primary/10 mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl">
             <FlaskConical className="text-primary h-7 w-7" />
@@ -27,13 +28,7 @@ export default function CalculadoraPage() {
           </p>
         </div>
 
-        {/* Calculator */}
-        <DilutionCalculator />
-
-        {/* Saved dilutions — locked for guests */}
-        <div className="mt-10">
-          <SavedDilutionsPreview />
-        </div>
+        <CalculatorSection isLoggedIn={!!userId} />
       </Container>
     </Section>
   )
