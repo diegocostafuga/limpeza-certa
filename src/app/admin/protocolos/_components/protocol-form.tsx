@@ -12,8 +12,16 @@ interface Step {
   tip?: string
 }
 
+interface InitialData {
+  title: string
+  category: string
+  objectType: string | null
+  steps: { order: number; title: string; description: string; tip?: string | null }[]
+}
+
 interface ProtocolFormProps {
   protocol?: Protocol
+  initialData?: InitialData
 }
 
 const CATEGORIES = ['Banheiro', 'Cozinha', 'Sala', 'Quarto', 'Área de serviço', 'Geral']
@@ -32,20 +40,28 @@ function slugify(text: string) {
     .replace(/^-|-$/g, '')
 }
 
-export function ProtocolForm({ protocol }: ProtocolFormProps) {
+export function ProtocolForm({ protocol, initialData }: ProtocolFormProps) {
   const router = useRouter()
   const isEdit = !!protocol
 
-  const [title, setTitle] = useState(protocol?.title ?? '')
-  const [slug, setSlug] = useState(protocol?.slug ?? '')
+  const [title, setTitle] = useState(initialData?.title ?? protocol?.title ?? '')
+  const [slug, setSlug] = useState(
+    initialData ? slugify(initialData.title) : (protocol?.slug ?? '')
+  )
   const [slugManual, setSlugManual] = useState(isEdit)
-  const [category, setCategory] = useState(protocol?.category ?? CATEGORIES[0])
-  const [objectType, setObjectType] = useState(protocol?.objectType ?? '')
+  const [category, setCategory] = useState(
+    initialData?.category ?? protocol?.category ?? CATEGORIES[0]
+  )
+  const [objectType, setObjectType] = useState(
+    initialData?.objectType ?? protocol?.objectType ?? ''
+  )
   const [visibility, setVisibility] = useState<string>(protocol?.visibility ?? 'draft')
   const [steps, setSteps] = useState<Step[]>(
-    Array.isArray(protocol?.steps) && (protocol.steps as Step[]).length > 0
-      ? (protocol.steps as Step[])
-      : [{ order: 1, title: '', description: '', tip: '' }]
+    initialData?.steps.length
+      ? initialData.steps.map((s) => ({ ...s, tip: s.tip ?? '' }))
+      : Array.isArray(protocol?.steps) && (protocol.steps as Step[]).length > 0
+        ? (protocol.steps as Step[])
+        : [{ order: 1, title: '', description: '', tip: '' }]
   )
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
